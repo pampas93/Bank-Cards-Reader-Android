@@ -7,22 +7,20 @@ import pytesseract as tes
 import re
 from PIL import Image
 import os
-import imquality.brisque as brisque
+# import imquality.brisque as brisque
 from skimage import io, img_as_float
 
 
-#Using brisque scores to find quality of image
-#but due to no proper availability of bank card images we can't create a relationship
-def quality_check(loc):
-    try:
-        img= img_as_float(io.imread(loc, as_gray=True))
-        score=brisque.score(img)
-        print("Image Score = ", score)
-    except:
-        print("Exception in finding scores")
+# #Using brisque scores to find quality of image
+# #but due to no proper availability of bank card images we can't create a relationship
+# def quality_check(loc):
+#     try:
+#         img= img_as_float(io.imread(loc, as_gray=True))
+#         score=brisque.score(img)
+#         print("Image Score = ", score)
+#     except:
+#         print("Exception in finding scores")
         
-    
-
 
 #Many Cards use OCR-A language (Matching with its template)
 def template_match(image,req_str):
@@ -31,7 +29,7 @@ def template_match(image,req_str):
         # and threshold it, such that the digits appear as *white* on a
         # *black* background
         # and invert it, such that the digits appear as *white* on a *black*
-        ref = cv2.imread("C:\\Users\\Man$\\Desktop\\Cards\\OCR.png")
+        ref = cv2.imread("./OCR.png")
         ref = cv2.cvtColor(ref, cv2.COLOR_BGR2GRAY)
         ref = cv2.threshold(ref, 10, 255, cv2.THRESH_BINARY_INV)[1]
 
@@ -244,7 +242,7 @@ def find_details(loc):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     gray_thresh = cv2.threshold(gray, 0, 255,
             cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
-    filename_thresh = "C:\\Users\\Man$\\Desktop\\{}.png".format(os.getpid())
+    filename_thresh = "./{}.png".format(os.getpid())
     cv2.imwrite(filename_thresh, gray)
     # load the image as a PIL/Pillow image, apply OCR, and then delete
     # the temporary file
@@ -287,11 +285,8 @@ def find_details(loc):
     #os.remove(filename_thresh)
     #os.remove(filename_blur)
 
-
-
-
 # driver
 if __name__ == '__main__':
-    loc="C:\\Users\\Man$\\Desktop\\Cards\\card2.png"
-    quality_check(loc)
+    loc="./card2.png"
+    # quality_check(loc)
     find_details(loc)
